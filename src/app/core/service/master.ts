@@ -18,13 +18,11 @@ export class MasterService {
   }
   editMasterData(master: MasterData) {
     return this.http.put(
-      environment.API_URL + API_Constant.MASTER.UPDATE_MASTER + '{' + master.masterId + '}',
+      environment.API_URL + API_Constant.MASTER.UPDATE_MASTER + master.masterId,
       master
     );
   }
   deleteMasterData(masterId: number) {
-    return this.http.delete(
-      environment.API_URL + API_Constant.MASTER.DELETE_MASTER + '{' + masterId + '}'
-    );
+    return this.http.delete(environment.API_URL + API_Constant.MASTER.DELETE_MASTER + masterId);
   }
 }

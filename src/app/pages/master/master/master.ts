@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MasterService } from '../../../core/service/master';
@@ -6,7 +6,7 @@ import { MasterData } from '../../../core/model/interface/MasterData';
 
 @Component({
   selector: 'app-master',
-  imports: [FormsModule, NgFor, NgIf],
+  imports: [FormsModule, NgFor, NgIf, NgClass],
   templateUrl: './master.html',
   styleUrl: './master.css',
 })
@@ -47,7 +47,7 @@ export class Master implements OnInit {
       ['INVOICE', 'bi-receipt'],
       ['RECEIPT', 'bi-file-earmark-check'],
       ['VOUCHER', 'bi-ticket'],
-      ['NETBANKING', 'bi-bank'],
+      ['NET BANKING', 'bi-bank'],
       ['CHEQUE', 'bi-file-earmark'],
     ]);
   }
@@ -55,10 +55,7 @@ export class Master implements OnInit {
   filterItems(filter: string) {
     this.activeFilter = filter;
     this.filteredMasterData = [...this.masterDataList];
-
-    if (filter === 'all') {
-      this.filteredMasterData = [...this.masterDataList];
-    } else {
+    if (filter !== 'all') {
       this.filteredMasterData = this.filteredMasterData.filter((master) => {
         return master.masterFor.toUpperCase().includes(filter.toUpperCase());
       });
@@ -80,16 +77,23 @@ export class Master implements OnInit {
     this.masterForm = item;
   }
 
+  updatePage() {
+    this.getAllMasterDataList();
+    this.filterItems(this.activeFilter);
+    this.closeForm();
+  }
   saveFormData() {
     if (this.masterForm.masterId > 0) {
       this.masterService.editMasterData(this.masterForm).subscribe({
         next: (res: any) => {
+          this.updatePage();
           alert('The Master Data Updated');
         },
       });
     } else {
       this.masterService.saveMasterData(this.masterForm).subscribe({
         next: (res: any) => {
+          this.updatePage();
           alert('Master Data Saves Successfly');
         },
         error: (error: Error) => {
@@ -97,8 +101,6 @@ export class Master implements OnInit {
         },
       });
     }
-    this.filterItems(this.activeFilter);
-    this.closeForm();
   }
 
   deleteItem(masterId: number) {
@@ -106,14 +108,13 @@ export class Master implements OnInit {
       debugger;
       this.masterService.deleteMasterData(masterId).subscribe({
         next: (res: any) => {
+          this.updatePage();
           alert('Master Data Deleted Successfully');
         },
         error: (error: Error) => {
           console.log(error);
         },
       });
-      // this.items = this.items.filter((item) => item.id !== id);
-      //this.filterItems(this.activeFilter);
     }
   }
 }

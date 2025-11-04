@@ -15,7 +15,7 @@
 }
 
 .header-section {
-  padding: 30px 40px;
+  padding: 20px 40px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
@@ -29,7 +29,7 @@
 
 .cards-section {
   flex: 1;
-  padding: 40px 20px;
+  padding: 30px 20px;
   overflow-y: auto;
   /* background: #f8f9fa; */
 }

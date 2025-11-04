@@ -15,7 +15,6 @@ body {
     sans-serif;
   background: var(--primary-gradient);
   min-height: 100vh;
-  padding: 20px;
 }
 
 .fade-in {

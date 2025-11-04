@@ -9,8 +9,7 @@
       <div class="d-flex gap-3 align-items-center">
         <button
           class="btn btn-lg px-4 py-2 rounded-pill shadow-sm toggle-btn"
-          [class.btn-light]="activeFilter === 'all'"
-          [class.btn-outline-light]="activeFilter !== 'all'"
+          [ngClass]="activeFilter === 'all' ? 'btn-light' : 'btn-outline-light'"
           (click)="filterItems('all')"
         >
           <i class="bi bi-grid-fill me-2"></i>All
@@ -18,11 +17,10 @@
 
         <button
           class="btn btn-lg px-4 py-2 rounded-pill shadow-sm toggle-btn"
-          [class.btn-light]="activeFilter === 'Payment'"
-          [class.btn-outline-light]="activeFilter !== 'Payment'"
+          [ngClass]="activeFilter === 'Payment' ? 'btn-light' : 'btn-outline-light'"
           (click)="filterItems('Payment')"
         >
-          <i class="bi bi-credit-card me-2"></i>Payment
+          <i class="bi bi-credit-card me-2"></i>Payment Mode
         </button>
 
         <button
@@ -31,7 +29,7 @@
           [class.btn-outline-light]="activeFilter !== 'Refrence'"
           (click)="filterItems('Refrence')"
         >
-          <i class="bi bi-bookmark me-2"></i>Reference
+          <i class="bi bi-bookmark me-2"></i>Reference By
         </button>
 
         <button
