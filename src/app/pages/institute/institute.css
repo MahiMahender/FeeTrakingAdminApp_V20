@@ -1,0 +1,261 @@
+.min-vh-100 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.container {
+  flex: 1;
+}
+
+.card-header {
+  border-bottom: none;
+}
+
+.card-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.form-label {
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.form-control-lg,
+.form-select-lg {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.form-control-lg:hover,
+.form-select-lg:hover {
+  border-color: var(--primary-color);
+}
+
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary {
+  border: 2px solid #cbd5e0;
+  color: #4a5568;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f7fafc;
+  border-color: #a0aec0;
+  color: #2d3748;
+}
+
+.btn-outline-danger {
+  border: 2px solid #fc8181;
+  color: #c53030;
+}
+
+.btn-outline-danger:hover {
+  background-color: #fc8181;
+  color: white;
+}
+
+.invalid-feedback {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.text-muted {
+  color: #718096 !important;
+}
+
+footer {
+  margin-top: auto;
+  box-shadow: 0 -4px 20px rgba(102, 126, 234, 0.2);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  header p {
+    font-size: 0.875rem;
+  }
+
+  .toggle-buttons {
+    flex-direction: column;
+  }
+
+  .toggle-buttons .btn {
+    width: 100%;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--primary-gradient);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+.badge-gradient {
+  display: inline-block;
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+input.is-invalid,
+select.is-invalid {
+  border-color: #fc8181;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* ----- HEADER ----- */
+.gradient-bg {
+  background: var(--primary-gradient);
+  color: #fff;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ----- WHITE CONTAINER ----- */
+.white-bg {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  margin-top: -50px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ----- GRADIENT TEXT ----- */
+.gradient-text {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ----- BUTTONS ----- */
+.btn-gradient {
+  background: var(--primary-gradient);
+  color: #fff !important;
+  border: none;
+  border-radius: 10px;
+  transition: 0.3s ease;
+  box-shadow: 0 3px 8px rgba(102, 126, 234, 0.3);
+}
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Outline secondary button */
+.btn-outline-secondary {
+  border: 2px solid #e0e0e0;
+  color: var(--text-dark);
+  background: #fff;
+  border-radius: 10px;
+  transition: 0.3s ease;
+}
+.btn-outline-secondary:hover {
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+/* ----- TOGGLE SECTION ----- */
+.toggle-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.toggle-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+/* ----- CARDS ----- */
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  background: var(--primary-gradient);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  padding: 15px;
+}
+
+.card-footer {
+  background: #f8f9fc;
+  border-top: 1px solid #eee;
+}
+
+/* ----- BADGE ----- */
+.badge-gradient {
+  background: var(--primary-gradient);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: 500;
+}

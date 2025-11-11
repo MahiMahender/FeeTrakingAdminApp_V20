@@ -1,5 +1,5 @@
 <div class="main-wrapper">
-  <div class="header-section">
+  <div class="header-section mb-2">
     <div class="d-flex align-items-center justify-content-between">
       <div class="d-flex align-items-center">
         <i class="bi bi-gear-fill text-white fs-1 me-3"></i>
@@ -42,6 +42,15 @@
       </div>
     </div>
   </div>
+  @if(alertMsgData().alertType!=''){
+  <app-alert-box
+    class="mb-0"
+    [alertType]="alertMsgData().alertType"
+    [alertMessage]="alertMsgData().alertMessage"
+  ></app-alert-box>
+  } @if(loderData().loaderType=='content'){
+  <app-loader [loaderType]="loderData().loaderType"></app-loader>
+  }
 
   <div class="content-container" [class.form-open]="showForm">
     <div class="cards-section">
@@ -133,7 +142,10 @@
           </div>
 
           <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-semibold">
-            <i class="bi bi-check-circle me-2"></i>Save
+            @if(loderData().loaderType=='button'){
+            <app-loader [loaderType]="loderData().loaderType"></app-loader>
+            }
+            <i class="bi bi-check-circle me-2"></i>{{ isEdit == true ? 'Edit' : 'Save' }}
           </button>
         </form>
       </div>

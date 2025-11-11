@@ -1,16 +1,20 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MasterService } from '../../../core/service/master';
 import { MasterData } from '../../../core/model/interface/MasterData';
+import { AlertBox } from '../../../shared/alert-box/alert-box';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Loader } from '../../../shared/loader/loader';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-master',
-  imports: [FormsModule, NgFor, NgIf, NgClass],
+  imports: [FormsModule, NgFor, NgIf, NgClass, AlertBox, Loader],
   templateUrl: './master.html',
   styleUrl: './master.css',
 })
-export class Master implements OnInit {
+export class Master implements OnInit, OnDestroy {
   masterService = inject(MasterService);
 
   showForm = false;
@@ -19,25 +23,38 @@ export class Master implements OnInit {
   masterDataList: MasterData[] = [];
   filteredMasterData: MasterData[] = [];
   icons!: Map<string, string>;
-  masterForm!: MasterData;
+  masterForm: MasterData;
+  isEdit: Boolean;
+  subscriptionList: Subscription[];
+
+  alertMsgData = signal({ alertType: '', alertMessage: '' });
+  loderData = signal({ loaderType: '' });
 
   constructor() {
+    this.isEdit = false;
     this.getIcons();
     this.masterForm = new MasterData();
+    this.subscriptionList = [];
   }
 
   ngOnInit(): void {
     this.getAllMasterDataList();
   }
   getAllMasterDataList() {
-    this.masterService.getAllMasterData().subscribe({
+    this.loderData.set({ loaderType: 'content' });
+    const loadMasterSub$ = this.masterService.getAllMasterData().subscribe({
       next: (res: any) => {
-        this.masterDataList = res.data.filter((master: MasterData) =>
-          this.icons.has(master.masterValue.toUpperCase())
-        );
-        this.filteredMasterData = [...this.masterDataList];
+        this.getAllMasterDataWithIcons(res.data);
+        this.loderData.set({ loaderType: '' });
       },
     });
+    this.subscriptionList.push(loadMasterSub$);
+  }
+  getAllMasterDataWithIcons(res: MasterData[]) {
+    this.masterDataList = res.filter((master: MasterData) =>
+      this.icons.has(master.masterValue.toUpperCase())
+    );
+    this.filteredMasterData = [...this.masterDataList];
   }
   getIcons() {
     this.icons = new Map<string, string>([
@@ -64,6 +81,7 @@ export class Master implements OnInit {
 
   openForm() {
     this.showForm = true;
+    this.isEdit = false;
     this.masterForm = new MasterData();
   }
 
@@ -74,47 +92,82 @@ export class Master implements OnInit {
 
   editItem(item: MasterData) {
     this.showForm = true;
+    this.isEdit = true;
     this.masterForm = item;
   }
 
   updatePage() {
-    this.getAllMasterDataList();
     this.filterItems(this.activeFilter);
     this.closeForm();
   }
   saveFormData() {
+    this.loderData.set({ loaderType: 'button' });
     if (this.masterForm.masterId > 0) {
-      this.masterService.editMasterData(this.masterForm).subscribe({
+      const editFormSub$ = this.masterService.editMasterData(this.masterForm).subscribe({
         next: (res: any) => {
+          this.loderData.set({ loaderType: '' });
+          let resData = res;
+          this.masterDataList = this.masterDataList.map((master) =>
+            master.masterId === resData.masterId ? { ...master, ...res } : master
+          );
+          this.getAllMasterDataWithIcons(this.masterDataList);
           this.updatePage();
-          alert('The Master Data Updated');
+          this.alertMsg('Suceess', 'Master data Updated successfully');
+        },
+        error: (error: HttpErrorResponse) => {
+          this.alertMsg('Error', error.error?.message);
         },
       });
+      this.subscriptionList.push(editFormSub$);
     } else {
-      this.masterService.saveMasterData(this.masterForm).subscribe({
+      const saveFormsub$ = this.masterService.saveMasterData(this.masterForm).subscribe({
         next: (res: any) => {
+          this.loderData.set({ loaderType: '' });
+          this.masterDataList.push(res.data);
           this.updatePage();
-          alert('Master Data Saves Successfly');
+          this.alertMsg('Suceess', 'Master data Saves successfully');
         },
-        error: (error: Error) => {
+        error: (error: HttpErrorResponse) => {
+          this.alertMsg('Error', error.error?.message);
           console.log(error);
         },
       });
+      this.subscriptionList.push(saveFormsub$);
     }
   }
 
   deleteItem(masterId: number) {
     if (confirm('Are you sure you want to delete this item?')) {
-      debugger;
-      this.masterService.deleteMasterData(masterId).subscribe({
+      const deletMasterSub$ = this.masterService.deleteMasterData(masterId).subscribe({
         next: (res: any) => {
+          this.masterDataList = this.masterDataList.filter(
+            (master) => master.masterId !== masterId
+          );
           this.updatePage();
-          alert('Master Data Deleted Successfully');
+          this.alertMsg('Suceess', 'Master data deleted successfully');
         },
-        error: (error: Error) => {
-          console.log(error);
+        error: (error: HttpErrorResponse) => {
+          this.alertMsg('Error', error.error?.message);
         },
       });
+      this.subscriptionList.push(deletMasterSub$);
     }
+  }
+  alertMsg(type: string, msg: string) {
+    this.alertMsgData.set({
+      alertType: type,
+      alertMessage: msg,
+    });
+    setTimeout(() => {
+      this.alertMsgData.set({
+        alertType: '',
+        alertMessage: '',
+      });
+    }, 5000);
+  }
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 }
