@@ -6,6 +6,21 @@ export const API_Constant = {
     UPDATE_BRANCH: 'BranchMaster/update-branch',
     DELETE_BRANCH: 'BranchMaster/delete-branch/',
   },
+  COURSE: {
+    CREATE_COURSE: 'Course/createCourse',
+    GET_ALL_COURSES: 'Course/getAllCourses',
+    GET_COURSE_BY_ID: 'Course/getCourseById/',
+    UPDATE_COURSE: 'Course/updateCourse',
+    DELETE_COURSE: 'Course/deleteCourse/',
+    GET_COURSE_BY_INSTITUTE_ID: 'Course/getCoursesByInstitute/',
+  },
+  Enrollment: {
+    CREATE_ENROLLMENT: 'Enrollments/createStudentEnrollment',
+    GET_ALL_ENROLLMENTS_BY_INSTITUTE_ID: 'Enrollments/getAllEnrollments/',
+    GET_ENROLLMENT_BY_ID: 'Enrollments/getEnrollmentById/',
+    UPDATE_ENROLLMENT: 'Enrollments/updateEnrollment/',
+    DELETE_ENROllment: 'Enrollments/deleteEnrollment/',
+  },
   INSTITUTE_Master: {
     CREATE_INSTITUTE: 'InstituteMaster/create-institute',
     GET_ALL_INSTITUTES: 'InstituteMaster/get-all-institutes',

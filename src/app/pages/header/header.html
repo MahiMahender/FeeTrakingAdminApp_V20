@@ -1,19 +1,12 @@
-<nav
-  class="navbar sticky-top navbar-expand-xl navbar-dark"
-  style="background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px)"
->
+<nav class="navbar sticky-top navbar-expand-xl navbar-dark"
+  style="background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px)">
   <div class="container-fluid">
     <!-- Brand/Logo -->
     <a class="navbar-brand fw-bold" href="/" style="font-size: 1.5rem; color: #ffffff"> MyApp </a>
 
     <!-- Toggle Button for Mobile -->
-    <button
-      class="navbar-toggler border-0"
-      type="button"
-      (click)="toggleNavbar()"
-      [attr.aria-expanded]="!isCollapsed"
-      aria-label="Toggle navigation"
-    >
+    <button class="navbar-toggler border-0" type="button" (click)="toggleNavbar()" [attr.aria-expanded]="!isCollapsed"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -25,47 +18,42 @@
           <a class="nav-link" href="#" style="color: #ffffff; transition: color 0.3s">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/master" style="color: #ffffff; transition: color 0.3s"
-            >Master</a
-          >
+          <a class="nav-link" routerLink="/master" style="color: #ffffff; transition: color 0.3s">Master</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/package" style="color: #ffffff; transition: color 0.3s"
-            >Package</a
-          >
+          <a class="nav-link" routerLink="/package" style="color: #ffffff; transition: color 0.3s">Package</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/institute" style="color: #ffffff; transition: color 0.3s"
-            >Institute</a
-          >
+          <a class="nav-link" routerLink="/institute" style="color: #ffffff; transition: color 0.3s">Institute</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/branch" style="color: #ffffff; transition: color 0.3s">Branch</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/course" style="color: #ffffff; transition: color 0.3s">Course</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/enrollment" style="color: #ffffff; transition: color 0.3s">Enrollment</a>
         </li>
       </ul>
 
       <!-- Right Side - Login/Signup Buttons -->
       <div class="d-flex gap-2">
-        <button
-          class="btn btn-outline-light"
-          (click)="navigateTo('/login')"
-          style="
+        <button class="btn btn-outline-light" (click)="navigateTo('/login')" style="
             border-color: #ffffff;
             color: #ffffff;
             transition: all 0.3s;
             padding: 0.5rem 1.5rem;
-          "
-        >
+          ">
           Login
         </button>
-        <button
-          class="btn"
-          (click)="navigateTo('/signup')"
-          style="
+        <button class="btn" (click)="navigateTo('/signup')" style="
             background-color: #ffffff;
             color: #000000;
             font-weight: 600;
             transition: all 0.3s;
             padding: 0.5rem 1.5rem;
-          "
-        >
+          ">
           Sign Up
         </button>
       </div>

@@ -1,0 +1,105 @@
+.modal-backdrop.show {
+  opacity: 0.5;
+}
+
+.modal.show {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog {
+  margin: 1.75rem auto;
+}
+
+.card-header h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-footer {
+  padding: 0.75rem 1rem;
+}
+
+.text-break {
+  word-break: break-word;
+}
+
+.btn-group .btn {
+  padding: 0.5rem 1.25rem;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0.375rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+}
+
+.card-img-wrapper {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form-scroll {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.form-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.form-scroll::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 10px;
+}
+
+.form-scroll::-webkit-scrollbar-thumb:hover {
+  background: #764ba2;
+}
+
+.modal-fullscreen-md-down {
+  max-width: 90vw;
+}
+
+@media (max-width: 768px) {
+  .btn-group {
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    flex: 1;
+  }
+
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .form-scroll {
+    max-height: calc(100vh - 200px);
+  }
+}

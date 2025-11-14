@@ -8,11 +8,7 @@
               <h2 class="mb-1"><i class="bi bi-box-seam me-2"></i>Package Management</h2>
               <p class="mb-0 opacity-75">Manage your subscription packages</p>
             </div>
-            <button
-              class="btn btn-light text-gradient fw-bold"
-              (click)="showAddForm()"
-              *ngIf="!isFormVisible"
-            >
+            <button class="btn btn-light text-gradient fw-bold" (click)="showAddForm()" *ngIf="!isFormVisible">
               <i class="bi bi-plus-circle me-2"></i>Add New Package
             </button>
           </div>
@@ -26,11 +22,7 @@
       <div class="card border-0">
         <div class="card-header gradient-bg text-white border-0 p-4">
           <h5 class="mb-0">
-            <i
-              class="bi"
-              [class.bi-plus-circle]="!isEditMode"
-              [class.bi-pencil-square]="isEditMode"
-            ></i>
+            <i class="bi" [class.bi-plus-circle]="!isEditMode" [class.bi-pencil-square]="isEditMode"></i>
             {{ isEditMode ? 'Edit Package' : 'Add New Package' }}
           </h5>
         </div>
@@ -39,73 +31,40 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label fw-bold">Package Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="currentPackage.packageName"
-                  name="packageName"
-                  required
-                />
+                <input type="text" class="form-control" [(ngModel)]="currentPackage.packageName" name="packageName"
+                  required />
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label fw-bold">One Time Total Cost</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  [(ngModel)]="currentPackage.oneTimeTotalCost"
-                  name="oneTimeCost"
-                  required
-                />
+                <input type="number" class="form-control" [(ngModel)]="currentPackage.oneTimeTotalCost"
+                  name="oneTimeCost" required />
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label fw-bold">EMI Total Cost</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="currentPackage.emiTotalCost"
-                  name="emiCost"
-                  placeholder="e.g., 1000/month"
-                  required
-                />
+                <input type="text" class="form-control" [(ngModel)]="currentPackage.emiTotalCost" name="emiCost"
+                  placeholder="e.g., 1000/month" required />
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label fw-bold">Max Branches</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  [disabled]="isEditMode"
-                  [(ngModel)]="currentPackage.maxBranches"
-                  name="maxBranches"
-                  required
-                />
+                <input type="number" class="form-control" [disabled]="isEditMode"
+                  [(ngModel)]="currentPackage.maxBranches" name="maxBranches" required />
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label fw-bold">Max Students</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  [disabled]="isEditMode"
-                  [(ngModel)]="currentPackage.maxStudents"
-                  name="maxStudents"
-                  required
-                />
+                <input type="number" class="form-control" [disabled]="isEditMode"
+                  [(ngModel)]="currentPackage.maxStudents" name="maxStudents" required />
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label fw-bold">SMS Alert</label>
                 <div class="form-check form-switch mt-2">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    [(ngModel)]="currentPackage.isSmsAlert"
-                    name="smsAlert"
-                    id="smsAlert"
-                  />
+                  <input type="checkbox" class="form-check-input" [(ngModel)]="currentPackage.isSmsAlert"
+                    name="smsAlert" id="smsAlert" />
                   <label class="form-check-label" for="smsAlert">
                     {{ currentPackage.isSmsAlert ? 'Enabled' : 'Disabled' }}
                   </label>
@@ -135,18 +94,10 @@
           <div class="d-flex justify-content-between align-items-start mb-3">
             <span class="badge badge-gradient fs-6">{{ pkg.packageName }}</span>
             <div class="btn-group btn-group-sm">
-              <button
-                class="btn btn-outline-primary btn-sm"
-                (click)="editPackage(pkg)"
-                title="Edit"
-              >
+              <button class="btn btn-outline-primary btn-sm" (click)="editPackage(pkg)" title="Edit">
                 <i class="bi bi-pencil"></i>
               </button>
-              <button
-                class="btn btn-outline-danger btn-sm"
-                (click)="deletePackage(pkg.packageId)"
-                title="Delete"
-              >
+              <button class="btn btn-outline-danger btn-sm" (click)="deletePackage(pkg.packageId)" title="Delete">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
@@ -185,11 +136,7 @@
             <div class="detail-item">
               <span class="detail-label">SMS Alert</span>
               <p class="detail-value">
-                <span
-                  class="badge"
-                  [class.bg-success]="pkg.isSmsAlert"
-                  [class.bg-secondary]="!pkg.isSmsAlert"
-                >
+                <span class="badge" [class.bg-success]="pkg.isSmsAlert" [class.bg-secondary]="!pkg.isSmsAlert">
                   {{ pkg.isSmsAlert ? 'Enabled' : 'Disabled' }}
                 </span>
               </p>
@@ -210,10 +157,7 @@
     <div class="col">
       <div class="card border-0 text-center py-5">
         <div class="card-body">
-          <i
-            class="bi bi-inbox text-muted"
-            style="font-size: 3rem; display: block; margin-bottom: 1rem"
-          ></i>
+          <i class="bi bi-inbox text-muted" style="font-size: 3rem; display: block; margin-bottom: 1rem"></i>
           <h5 class="text-muted mb-2">No Packages Found</h5>
           <p class="text-muted mb-4">Add a new package to get started</p>
           <button class="btn btn-gradient" (click)="showAddForm()">

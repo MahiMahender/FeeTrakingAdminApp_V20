@@ -1,0 +1,347 @@
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4 slide-in">
+                <h2 class="mb-0">
+                    <i class="bi bi-mortarboard-fill me-2"
+                        style="background: var(--primary-gradient);  -webkit-text-fill-color: transparent;"></i>
+                    Enrollment Management
+                </h2>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn" [class.btn-primary]="activeTab === 'all'"
+                        [class.btn-outline-primary]="activeTab !== 'all'" (click)="setActiveTab('all')">
+                        <i class="bi bi-list-ul me-1"></i> All Enrollments
+                    </button>
+                    <button type="button" class="btn" [class.btn-primary]="activeTab === 'add'"
+                        [class.btn-outline-primary]="activeTab !== 'add'" (click)="setActiveTab('add')">
+                        <i class="bi bi-plus-circle me-1"></i> Add Enrollment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="activeTab === 'all'">
+        <div class="col-md-6 col-lg-4 mb-4" *ngFor="let enrollment of enrollments; let i = index">
+            <div class="card h-100 fade-in">
+                <!-- <div class="card-img-wrapper">
+                    <img [src]="enrollment.profilePhotoName || getPlaceholderImage()" alt="Profile" class="card-img-top"
+                        onerror="this.src='https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400'">
+                </div> -->
+                <div class="card-header"
+                    style="background: var(--primary-gradient); color: white; padding: 0.75rem 1rem;">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-circle me-2"></i>
+                        {{ enrollment.studentName }}
+                    </h5>
+                    <span class="badge position-absolute top-0 end-0 m-2"
+                        [class.bg-success]="enrollment.isFeesCompleted"
+                        [class.bg-warning]="!enrollment.isFeesCompleted">
+                        <i class="bi" [class.bi-check-circle]="enrollment.isFeesCompleted"
+                            [class.bi-clock-history]="!enrollment.isFeesCompleted"></i>
+                        {{ enrollment.isFeesCompleted ? 'Paid' : 'Pending' }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 small">
+                        <div class="col-6">
+                            <small class="text-muted d-block">
+                                <i class="bi bi-book me-1"></i> Course
+                            </small>
+                            <strong class="d-block text-truncate">{{ getCourseName(enrollment.courseId) }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">
+                                <i class="bi bi-building me-1"></i> Institute
+                            </small>
+                            <strong class="d-block text-truncate">{{ getInstituteName(enrollment.instituteId)
+                                }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">
+                                <i class="bi bi-telephone me-1"></i> Contact
+                            </small>
+                            <strong class="d-block">{{ enrollment.studentContact }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">
+                                <i class="bi bi-geo-alt me-1"></i> City
+                            </small>
+                            <strong class="d-block">{{ enrollment.city }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">
+                                <i class="bi bi-mortarboard me-1"></i> Qualification
+                            </small>
+                            <strong class="d-block">{{ enrollment.qualification }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">
+                                <i class="bi bi-currency-rupee me-1"></i> Amount
+                            </small>
+                            <strong class="d-block text-success">₹{{ enrollment.finalAmount }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">
+                                <i class="bi bi-tag me-1"></i> Discount
+                            </small>
+                            <strong class="d-block text-danger">₹{{ enrollment.discountGiven }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">
+                                <i class="bi bi-calendar-event me-1"></i> Enrollment Date
+                            </small>
+                            <strong class="d-block">{{ enrollment.enrollmentDate | date:'dd MMM' }}</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top">
+                    <div class="d-flex gap-2 justify-content-end">
+                        <button class="btn btn-sm btn-outline-primary" (click)="editEnrollment(enrollment, i)">
+                            <i class="bi bi-pencil-square me-1"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteEnrollment(i)">
+                            <i class="bi bi-trash me-1"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 text-center py-5" *ngIf="enrollments.length === 0">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <h4 class="text-muted mt-3">No enrollments found</h4>
+            <p class="text-muted">Click "Add Enrollment" to create your first enrollment</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen-md-down">
+        <div class="modal-content">
+            <div class="modal-header" style="background: var(--primary-gradient); color: white;">
+                <h5 class="modal-title">
+                    <i class="bi bi-person-plus-fill me-2"></i>
+                    {{ editingIndex !== null ? 'Edit Enrollment' : 'Add New Enrollment' }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body form-scroll">
+                <form [formGroup]="enrollmentForm" (ngSubmit)="onSubmit()">
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-person-fill text-primary me-1"></i>Student Name *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="name"
+                                placeholder="Name">
+                            <div class="text-danger small mt-1"
+                                *ngIf="enrollmentForm.get('name')?.invalid && enrollmentForm.get('name')?.touched">
+                                Required</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-envelope-fill text-primary me-1"></i>Email *
+                            </label>
+                            <input type="email" class="form-control form-control-sm" formControlName="email"
+                                placeholder="email@example.com">
+                            <div class="text-danger small mt-1"
+                                *ngIf="enrollmentForm.get('email')?.invalid && enrollmentForm.get('email')?.touched">
+                                Valid email required</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-telephone-fill text-primary me-1"></i>Contact *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="contactNo"
+                                placeholder="10-digit" maxlength="10">
+                            <div class="text-danger small mt-1"
+                                *ngIf="enrollmentForm.get('contactNo')?.invalid && enrollmentForm.get('contactNo')?.touched">
+                                10-digit required</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-card-text text-primary me-1"></i>Aadhar *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="aadharCard"
+                                placeholder="12-digit" maxlength="12">
+                            <div class="text-danger small mt-1"
+                                *ngIf="enrollmentForm.get('aadharCard')?.invalid && enrollmentForm.get('aadharCard')?.touched">
+                                12-digit required</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-book-fill text-primary me-1"></i>Course *
+                            </label>
+                            <select class="form-select form-select-sm" formControlName="courseId">
+                                <option [ngValue]=0>Select</option>
+                                <option *ngFor="let course of courses" [ngValue]=course.id>{{ course.name }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-bank text-primary me-1"></i>Institute *
+                            </label>
+                            <select class="form-select form-select-sm" formControlName="instituteId">
+                                <option [ngValue]=0>Select</option>
+                                <option *ngFor="let institute of institutes" [ngValue]=institute.id>{{ institute.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-share-fill text-primary me-1"></i>Reference *
+                            </label>
+                            <select class="form-select form-select-sm" formControlName="refrenceById">
+                                <option [ngValue]=0>Select</option>
+                                <option *ngFor="let r of references" [ngValue]=r.id>{{ r.name }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-mortarboard text-primary me-1"></i>Qualification *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="qualification"
+                                placeholder="B.Tech">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-building text-primary me-1"></i>College *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="collegeName"
+                                placeholder="College name">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-geo text-primary me-1"></i>College City *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="collegeCity"
+                                placeholder="City">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-geo-alt-fill text-primary me-1"></i>City *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="city"
+                                placeholder="City">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-map-fill text-primary me-1"></i>State *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="state"
+                                placeholder="State">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-pin-map-fill text-primary me-1"></i>Pincode *
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="pincode"
+                                placeholder="6-digit" maxlength="6">
+                            <div class="text-danger small mt-1"
+                                *ngIf="enrollmentForm.get('pincode')?.invalid && enrollmentForm.get('pincode')?.touched">
+                                6-digit required</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-calendar-event text-primary me-1"></i>Date *
+                            </label>
+                            <input type="date" class="form-control form-control-sm" formControlName="enrollmentDate">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-currency-rupee text-primary me-1"></i>Final Amount *
+                            </label>
+                            <input type="number" class="form-control form-control-sm" formControlName="finalAmount"
+                                placeholder="0" min="0">
+                        </div>
+
+
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-tag-fill text-primary me-1"></i>Discount
+                            </label>
+                            <input type="number" class="form-control form-control-sm" formControlName="discountGiven"
+                                placeholder="0" min="0">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-currency-rupee text-primary me-1"></i>Enroll User *
+                            </label>
+                            <input type="number" class="form-control form-control-sm"
+                                formControlName="enrollmentDoneByUserId" placeholder="0" min="0">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-currency-rupee text-primary me-1"></i>Disuonted User *
+                            </label>
+                            <input type="number" class="form-control form-control-sm"
+                                formControlName="discountApprovedByUserId" placeholder="0" min="0">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-image text-primary me-1"></i>Photo URL
+                            </label>
+                            <input type="text" class="form-control form-control-sm" formControlName="profilePhotoName"
+                                placeholder="https://...">
+                        </div>
+
+                        <div class="col-9">
+                            <label class="form-label small fw-semibold">
+                                <i class="bi bi-people-fill text-primary me-1"></i>Family Details
+                            </label>
+                            <textarea class="form-control form-control-sm" formControlName="familyDetails" rows="1"
+                                placeholder="Details"></textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" formControlName="isFeesCompleted"
+                                    id="feesCompleted">
+                                <label class="form-check-label small" for="feesCompleted">
+                                    <i class="bi bi-check-circle text-primary me-1"></i>Fees Completed
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">
+                    <i class="bi bi-x-circle me-1"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="enrollmentForm.invalid">
+                    <i class="bi bi-check-circle me-1"></i>
+                    {{ editingIndex !== null ? 'Update' : 'Save' }} Enrollment
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade" [class.show]="showModal" *ngIf="showModal" (click)="closeModal()"></div>
